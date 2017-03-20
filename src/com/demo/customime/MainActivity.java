@@ -1,5 +1,7 @@
 package com.demo.customime;
 
+import java.util.Random;
+
 import android.app.Activity;
 import android.inputmethodservice.KeyboardView;
 import android.os.Bundle;
@@ -23,11 +25,7 @@ public class MainActivity extends Activity {
 		getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-		KeyboardView keyboardView = (KeyboardView) findViewById(R.id.keyboardview);
-		builder = new KeyboardBuilder(this, keyboardView, R.xml.keys_layout);
-
-		EditText editCustomIME = (EditText) findViewById(R.id.editCustomIME);
-		builder.registerEditText(editCustomIME);
+		initialKeyboard();
 	}
 
 	@Override
@@ -37,5 +35,17 @@ public class MainActivity extends Activity {
 		} else {
 			this.finish();
 		}
+	}
+
+	private void initialKeyboard() {
+		KeyboardView keyboardView = (KeyboardView) findViewById(R.id.keyboardview);
+		int keyboardLayout = getResources().getIdentifier(
+				"keys_layout_" + new Random().nextInt(3), "xml",
+				getPackageName());
+		builder = new KeyboardBuilder(this, keyboardView, keyboardLayout);
+
+		EditText editCustomIME = (EditText) findViewById(R.id.editCustomIME);
+		builder.registerEditText(editCustomIME);
+
 	}
 }
